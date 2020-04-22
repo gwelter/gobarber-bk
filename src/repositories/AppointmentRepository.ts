@@ -18,9 +18,7 @@ export default class AppointmentRepository {
   }
 
   public findByDate(date: Date): Appointment | null {
-    const appointmentFound = this.appointments.find(appointment =>
-      isEqual(date, appointment.date),
-    );
+    const appointmentFound = this.appointments.find(appointment => isEqual(date, appointment.date));
     return appointmentFound || null;
   }
 
