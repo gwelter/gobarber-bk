@@ -1,5 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
 import { verify } from 'jsonwebtoken';
+
+import AppError from '../errors/AppError';
+
 import authConfig from '../config/auth';
 
 interface TokenPayload {
@@ -16,8 +19,7 @@ export default function ensureAUthenticated(
   const authHeader = request.headers.authorization;
 
   if (!authHeader) {
-    return response.status(401).json({ error: 'Unauthorized' });
-    // throw new Error('Unauthorized');
+    throw new AppError('Unauthorized', 401);
   }
 
   const [, token] = authHeader.split(' ');
@@ -30,7 +32,6 @@ export default function ensureAUthenticated(
 
     return next();
   } catch {
-    return response.status(401).json({ error: 'Unauthorized' });
-    // throw new Error('Unauthorized');
+    throw new AppError('Unauthorized', 401);
   }
 }
