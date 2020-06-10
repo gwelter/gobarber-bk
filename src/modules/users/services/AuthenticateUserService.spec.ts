@@ -4,7 +4,7 @@ import FakeUsersRepository from '../repositories/fakes/FakeUsersRepository';
 import CreateUserService from './CreateUserService';
 import AuthenticateUserService from './AuthenticateUserService';
 
-describe('CreateUser', () => {
+describe('AutenticateUser', () => {
   it('should be able to autenticate with an existing user', async () => {
     const fakeHashProvider = new FakeHashProvider();
     const fakeUsersRepository = new FakeUsersRepository();
