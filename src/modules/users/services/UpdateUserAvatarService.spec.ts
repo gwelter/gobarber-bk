@@ -15,12 +15,13 @@ describe('UpdateUser', () => {
       password: '123456',
     });
 
-    await updateUserAvatarService.execute({
+    const updatedUser = await updateUserAvatarService.execute({
       user_id: user.id,
       avatarFileName: 'avatar.jpeg',
     });
 
-    expect(user.avatar).toBe('avatar.jpeg');
+    expect(updatedUser.id).toBe(user.id);
+    expect(updatedUser.avatar).toBe('avatar.jpeg');
   });
 
   it('should not be able to update an avatar of a non existing user', async () => {
@@ -50,17 +51,18 @@ describe('UpdateUser', () => {
       password: '123456',
     });
 
-    await updateUserAvatarService.execute({
+    let updatedUser = await updateUserAvatarService.execute({
       user_id: user.id,
       avatarFileName: 'avatar.jpeg',
     });
 
-    await updateUserAvatarService.execute({
-      user_id: user.id,
+    updatedUser = await updateUserAvatarService.execute({
+      user_id: updatedUser.id,
       avatarFileName: 'avatar_new.jpeg',
     });
 
     expect(deleteFile).toHaveBeenCalledWith('avatar.jpeg');
-    expect(user.avatar).toBe('avatar_new.jpeg');
+    expect(updatedUser.id).toBe(user.id);
+    expect(updatedUser.avatar).toBe('avatar_new.jpeg');
   });
 });

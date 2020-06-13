@@ -1,5 +1,5 @@
 import { uuid } from 'uuidv4';
-import IUserTokenRepository from '@modules/users/repositories/IUserTokenRepository';
+import IUserTokenRepository from '@modules/users/repositories/IUserTokensRepository';
 
 import UserToken from '../../infra/typeorm/entities/UserToken';
 
@@ -18,5 +18,10 @@ export default class FakeUserTokensRepository implements IUserTokenRepository {
     this.userTokens.push(userToken);
 
     return userToken;
+  }
+
+  public async findByToken(token: string): Promise<UserToken | undefined> {
+    const foundUserToken = this.userTokens.find(findToken => findToken.token === token);
+    return foundUserToken ? { ...foundUserToken } : undefined;
   }
 }

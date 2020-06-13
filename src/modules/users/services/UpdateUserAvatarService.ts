@@ -32,7 +32,6 @@ export default class UpdateUserAvatarService {
 
     const fileName = await this.storageProvider.saveFile(avatarFileName);
     user.avatar = fileName;
-    await this.usersRepository.save(user);
-    return user;
+    return this.usersRepository.save(user);
   }
 }
