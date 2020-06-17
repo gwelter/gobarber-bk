@@ -1,4 +1,4 @@
-import { startOfHour } from 'date-fns';
+import { startOfHour, isBefore } from 'date-fns';
 import { injectable, inject } from 'tsyringe';
 
 import AppError from '@shared/errors/AppError';
@@ -21,8 +21,17 @@ export default class CreateAppointmentService {
 
   public async execute({ provider_id, user_id, date }: IRequest): Promise<Appointment> {
     const appointmentDate = startOfHour(date);
-    const findAppointmentInSameDate = await this.appointmentsRepository.findByDate(appointmentDate);
+    const now = startOfHour(Date.now());
 
+    if (provider_id === user_id) {
+      throw new AppError("You can't creante an appoinment with yourself");
+    }
+
+    if (isBefore(appointmentDate, now)) {
+      throw new AppError("You can't creante an appoinment on a past date");
+    }
+
+    const findAppointmentInSameDate = await this.appointmentsRepository.findByDate(appointmentDate);
     if (findAppointmentInSameDate) {
       throw new AppError('This appointment is already booked');
     }
