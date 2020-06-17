@@ -11,27 +11,26 @@ describe('ListProviderMonthAvailability', () => {
     listProviderMonthAvailabilityService = new ListProviderMonthAvailabilityService(fakeAppointmentsRepository);
   });
 
-  it('should be able to list all providers', async () => {
-    const MAY = 5;
+  it('should be able to list the month availability from provider', async () => {
     const workingHours = Array.from({ length: 10 }, (_, index) => index + 8);
     Promise.all(
       workingHours.map(workingHour =>
         fakeAppointmentsRepository.create({
           provider_id: 'provider_id',
-          date: new Date(2020, MAY - 1, 20, workingHour, 0, 0),
+          date: new Date(2020, 4, 20, workingHour, 0, 0),
         }),
       ),
     );
 
     await fakeAppointmentsRepository.create({
       provider_id: 'provider_id',
-      date: new Date(2020, MAY - 1, 21, 10, 0, 0),
+      date: new Date(2020, 4, 21, 10, 0, 0),
     });
 
     const providerAvaliability = await listProviderMonthAvailabilityService.execute({
       provider_id: 'provider_id',
       year: 2020,
-      month: MAY,
+      month: 5,
     });
 
     expect(providerAvaliability).toEqual(
