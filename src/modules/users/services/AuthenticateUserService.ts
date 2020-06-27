@@ -1,5 +1,6 @@
 import { sign } from 'jsonwebtoken';
 import { injectable, inject } from 'tsyringe';
+import { classToClass } from 'class-transformer';
 
 import AppError from '@shared/errors/AppError';
 import authConfig from '@config/auth';
@@ -47,7 +48,7 @@ export default class Authenticate {
     });
 
     return {
-      user,
+      user: classToClass(user),
       token,
     };
   }
